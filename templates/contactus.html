@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<form method="post" action="#">
+        <div class="row gtr-uniform">
+            <input type='hidden' id="csrftoken" name='csrftoken' value='{{ csrf_token }}' />
+            <div class="col-6 col-12-xsmall">
+                <input type="number" name="number" id="demo-name" value="" placeholder="Enter your number">
+            </div>
+
+
+            <!-- Break -->
+            <div class="col-12">
+                <textarea name="demo-message" id="message" placeholder="Enter your message" rows="6"></textarea>
+            </div>
+            <!-- Break -->
+            <div class="col-12">
+                <ul class="actions">
+                    <li><input type="button" value="Submit" onclick="submitform"  class="primary"></li>
+
+                </ul>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+<script>
+
+    function submitform(){
+        var number = $('#number').val();
+        var message = $('#message').val();
+        var csrftoken = $('#csrftoken').val();
+
+         $.ajax({
+                data : {
+                'number':number,
+                'message': message,
+                'csrftoken': csrftoken
+            },
+               type : 'get',
+                url : {% url 'contact' %},
+                success: function(response) { // on success..
+                    $('#DIV_CONTAINING_FORM').html(response); // update the DIV
+                }
+            });
+    }
+
+</script>
