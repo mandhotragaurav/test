@@ -6,7 +6,7 @@
         <div class="row gtr-uniform">
             <input type='hidden' id="csrftoken" name='csrftoken' value='{{ csrf_token }}' />
             <div class="col-6 col-12-xsmall">
-                <input type="number" name="number" id="demo-name" value="" placeholder="Enter your number">
+                <input style="margin-top:10px; width:100%" type="number" id="number"  placeholder="Enter your number">
             </div>
 
 
@@ -14,35 +14,55 @@
             <div class="col-12">
                 <textarea name="demo-message" id="message" placeholder="Enter your message" rows="6"></textarea>
             </div>
+            <div id="msg">
+
+            </div>
             <!-- Break -->
             <div class="col-12">
                 <ul class="actions">
-                    <li><input type="button" value="Submit" onclick="submitform"  class="primary"></li>
+                    <li><input type="button" value="Submit"  onclick="submitform()"  class="primary"></li>
 
                 </ul>
             </div>
         </div>
     </form>
 {% endblock %}
-<script>
+{% block script %}
+<script type="text/javascript">
 
     function submitform(){
+    $("#msg").empty();
+
         var number = $('#number').val();
         var message = $('#message').val();
-        var csrftoken = $('#csrftoken').val();
 
+        if (number && message) {
          $.ajax({
                 data : {
                 'number':number,
-                'message': message,
-                'csrftoken': csrftoken
+                'message': message
+
             },
                type : 'get',
-                url : {% url 'contact' %},
-                success: function(response) { // on success..
-                    $('#DIV_CONTAINING_FORM').html(response); // update the DIV
+
+                success: function(response) {
+                console.log(response.success);
+                if (response.success == true){
+
+                        $("#msg").append("<p style='color:red' >data saved..</p>");
+                    } else{
+
+                    $("#msg").append("<p style='color:red' >data not saved please try again..</p>");
+
+                    }
+
                 }
             });
+            }
+            else{
+            $("#msg").append("<p style='color:red' >all fields required</p>");
+            }
     }
 
 </script>
+{% endblock %}

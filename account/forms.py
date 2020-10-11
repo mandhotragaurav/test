@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 
-class ContactUsForm(UserCreationForm):
+class ContactUsForm(forms.ModelForm):
     class Meta:
         model = ContacUs
         fields = ("contact_number", "comment",)
